@@ -1,0 +1,30 @@
+#define USE_ARDUINO_INTERRUPTS true
+#include <PulseSensorPlayground.h>
+
+const int PulseWire = A0;
+int Threshold = 550;
+
+PulseSensorPlayground pulseSensor;
+
+void setup() {
+  Serial.begin(9600);
+
+  pulseSensor.analogInput(PulseWire);
+  pulseSensor.setThreshold(Threshold);
+
+  if (pulseSensor.begin()) {
+    Serial.println("Pulse Sensor Initialized");
+  }
+}
+
+void loop() {
+
+  int BPM = pulseSensor.getBeatsPerMinute();
+
+  if (pulseSensor.sawStartOfBeat()) {
+    Serial.print("BPM: ");
+    Serial.println(BPM);
+  }
+
+  delay(20);
+}
